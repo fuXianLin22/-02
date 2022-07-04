@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="search">
+    <div class="search" @click="toCitys">
       <div class="address">
         <span>北京</span>
       </div>
@@ -14,7 +14,7 @@
       />
     </div>
     <span class="icon">
-      <van-icon name="location-o" />
+      <van-icon name="location-o" size="25px" />
     </span>
     <!-- 轮播图 -->
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="#888888">
@@ -25,27 +25,76 @@
         />
       </van-swipe-item>
     </van-swipe>
+    <!-- 导图 -->
+    <van-grid :border="false">
+      <van-grid-item text="整租">
+        <template #icon>
+          <van-icon name="wap-home-o" class="grid" />
+        </template>
+      </van-grid-item>
+      <van-grid-item text="合租">
+        <template #icon>
+          <van-icon name="friends-o" class="grid" />
+        </template>
+      </van-grid-item>
+      <van-grid-item text="地图找房">
+        <template #icon>
+          <van-icon name="location-o" class="grid" />
+        </template>
+      </van-grid-item>
+      <van-grid-item text="去出租">
+        <template #icon>
+          <van-icon name="home-o" class="grid" />
+        </template>
+      </van-grid-item>
+    </van-grid>
+    <!-- 租房小组 -->
+    <div class="zufang">
+      <van-cell title="租房小组" value="更多" title-class="zufang_title" />
+      <!-- 信息列表 -->
+      <div class="zufang_main">
+        <van-card
+          :title="item.title"
+          :desc="item.desc"
+          :thumb="'http://liufusong.top:8080' + item.imgSrc"
+          v-for="item in houseList"
+          :key="item.id"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { getBanners } from '@/api'
+import { getBanners, getHouse } from '@/api'
 export default {
   name: 'Home',
   data() {
     return {
       value: '',
-      bannerList: []
+      bannerList: [],
+      houseList: []
     }
   },
   created() {
     this.getBanners()
+    this.getHouse()
   },
   methods: {
     async getBanners() {
       const { data } = await getBanners()
-      console.log(data.body)
+      // console.log(data.body)
       this.bannerList = data.body
+    },
+    async getHouse() {
+      const { data } = await getHouse()
+      // console.log(data.body)
+      this.houseList = data.body
+    },
+    toCitys() {
+      this.$router.push({
+        path: '/city'
+      })
     }
   }
 }
@@ -106,10 +155,54 @@ export default {
 }
 .icon {
   position: absolute;
-  top: 22px;
-  right: 10px;
+  top: 25px;
+  right: 15px;
   z-index: 10;
 }
+.grid {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
+  font-size: 30px;
+  color: #0ab06b;
+  background-color: #f2fbf7;
+}
+.zufang {
+  width: 100%;
+  height: 188px;
+  background-color: #f6f5f6;
+  .van-cell {
+    background-color: #f6f5f6;
+    .zufang_title {
+      font-weight: 700;
+    }
+  }
+  .zufang_main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .van-card {
+      // margin: 5px 5px;
+      height: 60px;
+      .van-card__thumb {
+        width: 50px;
+        margin-right: 18px;
+        .van-image {
+          padding-top: 0px;
+          width: 50px !important;
+          height: 50px !important;
+        }
+      }
+      &:nth-child(1) {
+        margin-top: 8px;
+      }
+    }
+  }
+}
+
 .homeImg {
   width: 100%;
   height: 212px;

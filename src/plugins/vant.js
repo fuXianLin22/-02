@@ -5,9 +5,25 @@ import {
   SwipeItem,
   Image as VanImage,
   Search,
-  Icon
+  Icon,
+  Grid,
+  GridItem,
+  Cell,
+  Card
 } from 'vant'
-const elements = [Icon, Tabbar, TabbarItem, Swipe, SwipeItem, VanImage, Search]
+const elements = [
+  Grid,
+  Card,
+  Cell,
+  GridItem,
+  Icon,
+  Tabbar,
+  TabbarItem,
+  Swipe,
+  SwipeItem,
+  VanImage,
+  Search
+]
 export default function (Vue) {
   elements.forEach((element) => Vue.use(element))
 }
